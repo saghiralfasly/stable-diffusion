@@ -119,13 +119,13 @@ class ImageNetBase(Dataset):
             human_dict = f.read().splitlines()
             human_dict = dict(line.split(maxsplit=1) for line in human_dict)
 
-        self.human_labels = [human_dict[s] for s in self.synsets]
+        # self.human_labels = [human_dict[s] for s in self.synsets]
 
         labels = {
             "relpath": np.array(self.relpaths),
             "synsets": np.array(self.synsets),
             "class_label": np.array(self.class_labels),
-            "human_label": np.array(self.human_labels),
+            # "human_label": np.array(self.human_labels),
         }
 
         if self.process_images:
@@ -140,7 +140,8 @@ class ImageNetBase(Dataset):
 
 
 class ImageNetTrain(ImageNetBase):
-    NAME = "ILSVRC2012_train"
+    # NAME = "ILSVRC2012_train"
+    NAME = "patches_1_million" #"patches_1_million" #"patches_val" #"patches"                 # *********************************************************************************
     URL = "http://www.image-net.org/challenges/LSVRC/2012/"
     AT_HASH = "a306397ccf9c2ead27155983c254227c0fd938e2"
     FILES = [
@@ -152,7 +153,7 @@ class ImageNetTrain(ImageNetBase):
 
     def __init__(self, process_images=True, data_root=None, **kwargs):
         self.process_images = process_images
-        self.data_root = data_root
+        self.data_root = "/mayo_atlas/atlas/publicDatasets/TCGA_patches/Patches1024Peyman/" #data_root  # *********************************************************************************
         super().__init__(**kwargs)
 
     def _prepare(self):
@@ -162,7 +163,8 @@ class ImageNetTrain(ImageNetBase):
             cachedir = os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache"))
             self.root = os.path.join(cachedir, "autoencoders/data", self.NAME)
 
-        self.datadir = os.path.join(self.root, "data")
+        # self.datadir = os.path.join(self.root, "data")
+        self.datadir = self.root # *********************************************************************************
         self.txt_filelist = os.path.join(self.root, "filelist.txt")
         self.expected_length = 1281167
         self.random_crop = retrieve(self.config, "ImageNetTrain/random_crop",
@@ -192,7 +194,8 @@ class ImageNetTrain(ImageNetBase):
                     with tarfile.open(subpath, "r:") as tar:
                         tar.extractall(path=subdir)
 
-            filelist = glob.glob(os.path.join(datadir, "**", "*.JPEG"))
+            # filelist = glob.glob(os.path.join(datadir, "**", "*.JPEG"))
+            filelist = glob.glob(os.path.join(datadir, "*.jpg")) # *********************************************************************************
             filelist = [os.path.relpath(p, start=datadir) for p in filelist]
             filelist = sorted(filelist)
             filelist = "\n".join(filelist)+"\n"
@@ -203,7 +206,9 @@ class ImageNetTrain(ImageNetBase):
 
 
 class ImageNetValidation(ImageNetBase):
-    NAME = "ILSVRC2012_validation"
+    # NAME = "ILSVRC2012_validation"
+    # NAME = "patches_val"                 # *********************************************************************************
+    NAME = "patches_test"                 # *********************************************************************************
     URL = "http://www.image-net.org/challenges/LSVRC/2012/"
     AT_HASH = "5d6d0df7ed81efd49ca99ea4737e0ae5e3a5f2e5"
     VS_URL = "https://heibox.uni-heidelberg.de/f/3e0f6e9c624e45f2bd73/?dl=1"
@@ -217,7 +222,8 @@ class ImageNetValidation(ImageNetBase):
     ]
 
     def __init__(self, process_images=True, data_root=None, **kwargs):
-        self.data_root = data_root
+        # self.data_root = data_root
+        self.data_root = "/mayo_atlas/atlas/publicDatasets/TCGA_patches/Patches1024Peyman/" #data_root  # *********************************************************************************
         self.process_images = process_images
         super().__init__(**kwargs)
 
@@ -227,7 +233,8 @@ class ImageNetValidation(ImageNetBase):
         else:
             cachedir = os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache"))
             self.root = os.path.join(cachedir, "autoencoders/data", self.NAME)
-        self.datadir = os.path.join(self.root, "data")
+        # self.datadir = os.path.join(self.root, "data")
+        self.datadir = self.root # *********************************************************************************
         self.txt_filelist = os.path.join(self.root, "filelist.txt")
         self.expected_length = 50000
         self.random_crop = retrieve(self.config, "ImageNetValidation/random_crop",
@@ -266,7 +273,8 @@ class ImageNetValidation(ImageNetBase):
                     dst = os.path.join(datadir, v)
                     shutil.move(src, dst)
 
-            filelist = glob.glob(os.path.join(datadir, "**", "*.JPEG"))
+            # filelist = glob.glob(os.path.join(datadir, "**", "*.JPEG"))
+            filelist = glob.glob(os.path.join(datadir, "*.jpg")) # *********************************************************************************
             filelist = [os.path.relpath(p, start=datadir) for p in filelist]
             filelist = sorted(filelist)
             filelist = "\n".join(filelist)+"\n"
@@ -389,10 +397,10 @@ class ImageNetSRTrain(ImageNetSR):
         super().__init__(**kwargs)
 
     def get_base(self):
-        with open("data/imagenet_train_hr_indices.p", "rb") as f:
-            indices = pickle.load(f)
+        # with open("data/imagenet_train_hr_indices.p", "rb") as f:
+        #     indices = pickle.load(f)
         # print("indices: ", indices)
-        # print("^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&")
+        print("^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&^^^^^^^^^^^^^^^^^^^^^^^^^^")
         # print(type(indices))
         dset = ImageNetTrain(process_images=False,)
         print(f"length of the data list: {dset.__len__()}")
@@ -406,9 +414,10 @@ class ImageNetSRValidation(ImageNetSR):
         super().__init__(**kwargs)
 
     def get_base(self):
-        with open("data/imagenet_val_hr_indices.p", "rb") as f:
-            indices = pickle.load(f)
+        # with open("data/imagenet_val_hr_indices.p", "rb") as f:
+        #     indices = pickle.load(f)
         dset = ImageNetValidation(process_images=False,)
+        print("^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&^^^^^^^^^^^^^^^^^^^^^^^^^^")
         print(f"length of the data list: {dset.__len__()}")
         # convert the length of the data list to the length of the indices list
         indices = [i for i in range(dset.__len__())]     # *********************************************************************************

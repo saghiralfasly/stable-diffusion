@@ -65,18 +65,3 @@ model:
         lossconfig:
           target: ldm.modules.losses.contperceptual.DummyLoss
     cond_stage_config: __is_first_stage__
-    
-data:
-  target: main.DataModuleFromConfig
-  params:
-    batch_size: 12
-    wrap: true
-    train:
-      # target: "/mayo_atlas/home/m288756/stable-diffusion/data/images/filelist.txt"
-      # target: "/mayo_atlas/atlas/publicDatasets/TCGA_patches/Patches1024Peyman/patches_val/filelistAll.txt"
-      target: "/mayo_atlas/atlas/publicDatasets/TCGA_patches/Patches1024Peyman/patches_1_million/filelistAll.txt"
-      # target: "/mayo_atlas/atlas/publicDatasets/TCGA_patches/Patches1024Peyman/filelist_3millions/filelistAll.txt"
-      # target: "/mayo_atlas/home/m288756/stable-diffusion/data/"
-      params:
-        size: 512
-        crop_size: 256

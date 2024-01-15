@@ -1,0 +1,66 @@
+# .gitignore
+
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+
+# Ignore all log files
+*.log
+logs*
+
+# Ignore data folder
+# /data/*
+
+# Ignore output folder
+/output/*
+
+*.json
+# *.txt
+*.pickle
+*.mat
+*.csv
+
+*.zip
+
+
+# Ignore npy files
+*.npy
+
+*.png
+
+*.gif
+
+*.ckpt
+/logs/*
+
+*.pt
+
+
+*.svs
+*.partial
+*parcel
+
+/data/*
+
+
+*.jpg
+
+*.pkl
+
+*.pyth
+*.pth
+*.pth
+
+/src/modelss/sigma/vae_logs/*
+
+/src/modelss/weights/*
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Ignore files related to your virtual environment
+venv/
+*.env
+
+# Ignore yml files
+# *.yml

@@ -1,0 +1,1 @@
+python main_sdm.py --base models/ldm/inpainting_big/config.yaml --logdir logs1millionMaskedEdges --stage 1 -t --gpus 0,1,2,3

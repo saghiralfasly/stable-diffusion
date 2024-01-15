@@ -35,12 +35,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--indir",
         type=str,
+        default="data/one_sample/",
         nargs="?",
         help="dir containing image-mask pairs (`example.png` and `example_mask.png`)",
     )
     parser.add_argument(
         "--outdir",
         type=str,
+        default="outputs/inpainting_results_new_histo_one",
         nargs="?",
         help="dir to write results to",
     )
@@ -74,9 +76,18 @@ if __name__ == "__main__":
 
                 # encode masked image and concat downsampled mask
                 c = model.cond_stage_model.encode(batch["masked_image"])
+                print("shape before interpolation")
+                print(batch["masked_image"].shape)
+                print(batch["mask"].shape)
+                print("shape after interpolation")
+                print(c.shape)
+                
                 cc = torch.nn.functional.interpolate(batch["mask"],
                                                      size=c.shape[-2:])
                 c = torch.cat((c, cc), dim=1)
+                print(cc.shape)
+                print(c.shape)
+                print("-----------------------------------------------")
 
                 shape = (c.shape[1]-1,)+c.shape[2:]
                 samples_ddim, _ = sampler.sample(S=opt.steps,
@@ -84,6 +95,8 @@ if __name__ == "__main__":
                                                  batch_size=c.shape[0],
                                                  shape=shape,
                                                  verbose=False)
+                print("shape of samples_ddim")
+                print(samples_ddim.shape)
                 x_samples_ddim = model.decode_first_stage(samples_ddim)
 
                 image = torch.clamp((batch["image"]+1.0)/2.0,
