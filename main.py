@@ -560,7 +560,7 @@ if __name__ == "__main__":
 
         # model
         model = instantiate_from_config(config.model)
-        model.load_state_dict(torch.load('/mayo_atlas/home/m288756/stable-diffusion/models/ldm/inpainting_big/new_model.ckpt')['state_dict'])
+        # model.load_state_dict(torch.load('/mayo_atlas/home/m288756/stable-diffusion/models/ldm/inpainting_big/new_model.ckpt')['state_dict'])
 
         # trainer and callbacks
         trainer_kwargs = dict()

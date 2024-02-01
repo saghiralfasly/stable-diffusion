@@ -1,1 +1,18 @@
 python main_sdm.py --base models/ldm/inpainting_big/config.yaml --logdir logs1millionMaskedEdges --stage 1 -t --gpus 0,1,2,3
+
+
+semantic
+python main_sdm_semantic.py --base models/ldm/semantic_synthesis256/config_train.yaml --logdir logs_semantic -t --gpus 1,2,
+resume
+python main_sdm_semantic.py --base models/ldm/semantic_synthesis256/config_train.yaml -r logs_semantic/2024-01-17T14-10-19_config_train -t --gpus 1,2,
+
+
+python main_sdm_semantic.py --base models/ldm/semantic_synthesis256/config_train_prompt.yaml --logdir logs_semantic_prompt -t --gpus 0,1,2,3
+
+
+on PANDA:
+python main_sdm_semantic.py --base models/ldm/semantic_synthesis256/config_train_prompt_PANDA.yaml --logdir logs_semantic_prompt_PANDA -t --gpus 0,1,2,3
+
+streamlit
+streamlit run --server.port 8006 demo_semantic_histopathology_synthesis.py
+streamlit run --server.port --server.address=roqtiz001.mayo.edu 8006 demo_semantic_histopathology_synthesis.py
